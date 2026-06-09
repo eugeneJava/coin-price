@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  first-runner:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -21,3 +21,8 @@ jobs:
       - run: | 
           java --version
           node -v
+  second-runner:
+    runs-on: macos-latest
+    needs: [first-runner]
+    steps:
+      - run: echo "Keep your petrushka ${{github.repositoryUrl}}"
