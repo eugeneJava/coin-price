@@ -22,4 +22,3 @@ jobs:
       - run: | 
           java --version
           node -v
-          kubectl get pods
