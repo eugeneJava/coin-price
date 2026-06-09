@@ -19,3 +19,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: echo $GITHUB_WORKSPACE
+      - run: | 
+          java --version
+          node -v
+          kubectl get pods
