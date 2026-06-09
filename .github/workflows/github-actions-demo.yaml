@@ -17,7 +17,7 @@ jobs:
       - name: List files in the repository
         run: |
           pwd 
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/petushka
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: echo $GITHUB_WORKSPACE
       - run: | 
