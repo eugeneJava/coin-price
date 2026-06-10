@@ -16,4 +16,8 @@ public class Calculator {
     public int multiply(int a, int b) {
         return a * b;
     }
+
+    public double pow(int a, int b) {
+        return Math.pow(a, b);
+    }
 }
