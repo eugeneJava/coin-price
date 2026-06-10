@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Issue printer
-      - run: echo "Issue ${{github.event.issue.number}} - ${{github.event.issue.title}} is ${{github.event.issue.state}}"
+        run: echo "Issue ${{github.event.issue.number}} - ${{github.event.issue.title}} is ${{github.event.issue.state}}"
