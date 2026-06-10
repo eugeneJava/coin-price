@@ -1,10 +1,11 @@
 name: Open issue
-run-name: Open issue runner ${{github.event.issue.title}}
+run-name: Github issue handler ${{github.event.issue.title}}
 on:
   issues:
     types:
       - opened
       - edited
+      - closed
 jobs:
   issue-handler:
     runs-on: ubuntu-latest
