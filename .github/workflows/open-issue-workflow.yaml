@@ -1,0 +1,12 @@
+name: Open issue
+run-name: Open issue runner ${{github.event.issue.title}}
+on:
+  issues:
+    types:
+      - opened
+jobs:
+  issue-handler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Issue printer
+      - run: echo "Issue ${{github.event.issues.number}} - ${{github.event.issues.body}}" opened
