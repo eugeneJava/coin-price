@@ -1,0 +1,11 @@
+name: Pr assignee
+run-name: Show assignee
+on:
+  pull_request:
+    types: [assigned]
+jobs:
+  assigne-info:
+    runs-on: macos-latest
+    steps:
+      - name: Assignee name
+        run: echo "The ${{github.event.pull_request.title}} is assigned on ${{github.event.pull_request.assignee.login}}"
