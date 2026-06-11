@@ -1,8 +1,5 @@
 package org.example;
 
-/**
- * Simple arithmetic on two numbers.
- */
 public class Calculator {
 
     public int add(int a, int b) {
