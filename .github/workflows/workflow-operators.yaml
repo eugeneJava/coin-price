@@ -1,0 +1,12 @@
+name: Main push handler
+run-name: Run on push to main
+on: [push]
+jobs:
+  show-context-info:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show github context
+        run: echo "${{toJSON(github)}}"
+      - name: Show job info
+        run: echo "${{toJSON(job)}}"
