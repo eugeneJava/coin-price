@@ -1,0 +1,12 @@
+name: Manual workflow
+run-name: Manual workflow run
+on: [workflow_dispatch]
+
+jobs:
+  show-context-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show github context
+        run: echo "${{toJSON(github)}}"
+      - name: Show job info
+        run: echo "${{toJSON(job)}}"

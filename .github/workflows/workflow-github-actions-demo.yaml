@@ -21,7 +21,6 @@ jobs:
       - run: | 
           java --version
           node -v
-      - run: echo "${{toJSON(github)}}"
   second-runner:
     runs-on: macos-latest
     needs: [first-runner]
