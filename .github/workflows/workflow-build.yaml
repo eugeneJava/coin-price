@@ -7,9 +7,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: Show project structure
+      - name: [Before build] Show project structure
         run: tree $GITHUB_WORKSPACE
-      - name: Show Maven cache
+      - name: [Before build] Show Maven cache
+        run: |
+          if [ -d ~/.m2 ]; then
+                tree -L 4 ~/.m2
+          else
+                echo "No ~/.m2 directory yet"
+          fi
+
+      - name: Build app
+        run: mvn clean install
+      - name: [After build] Show project structure
+        run: tree $GITHUB_WORKSPACE
+      - name: [After build] Show Maven cache
         run: |
           if [ -d ~/.m2 ]; then
                 tree -L 4 ~/.m2
