@@ -7,6 +7,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+
+      - name: Cache maven build
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+
       - name: Before build - Show project structure
         run: tree $GITHUB_WORKSPACE
       - name: Before build - Show Maven cache
@@ -19,6 +26,7 @@ jobs:
 
       - name: Build app
         run: mvn clean install
+
       - name: After build - Show project structure
         run: tree $GITHUB_WORKSPACE
       - name: After build - Show Maven cache
