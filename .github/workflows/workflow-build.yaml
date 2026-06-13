@@ -10,4 +10,9 @@ jobs:
       - name: Show project structure
         run: tree $GITHUB_WORKSPACE
       - name: Show Maven cache
-        run: tree -L 4 ~/.m2
+        run: |
+          if [ -d ~/.m2 ]; then
+                tree -L 4 ~/.m2
+          else
+                echo "No ~/.m2 directory yet"
+          fi
