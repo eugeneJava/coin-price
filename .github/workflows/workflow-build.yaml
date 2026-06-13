@@ -8,4 +8,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - run: echo $GITHUB_WORKSPACE
-      - run: tree ~
+      - run: tree -L 4 ~
