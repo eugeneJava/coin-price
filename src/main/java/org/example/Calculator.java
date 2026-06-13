@@ -17,4 +17,8 @@ public class Calculator {
     public double pow(int a, int b) {
         return Math.pow(a, b);
     }
+
+    public double abs(int a) {
+        return Math.abs(a);
+    }
 }
