@@ -21,4 +21,8 @@ public class Calculator {
     public double abs(int a) {
         return Math.abs(a);
     }
+
+    public double cos(double a) {
+        return Math.cos(a);
+    }
 }
