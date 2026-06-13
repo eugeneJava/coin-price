@@ -1,0 +1,11 @@
+name: Build app
+run-name: Build app run
+on: push
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - run: echo $GITHUB_WORKSPACE
+      - run: echo tree ~
