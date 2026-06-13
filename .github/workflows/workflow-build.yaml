@@ -7,5 +7,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - run: echo $GITHUB_WORKSPACE
-      - run: tree -L 4 ~
+      - name: Show project structure
+        run: tree $GITHUB_WORKSPACE
+      - name: Show Maven cache
+        run: tree -L 4 ~/.m2
