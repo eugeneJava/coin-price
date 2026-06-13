@@ -22,7 +22,7 @@ public class Calculator {
         return Math.abs(a);
     }
 
-    public double sin(double a) {
-        return Math.sin(a);
+    public double tan(double a) {
+        return Math.tan(a);
     }
 }
