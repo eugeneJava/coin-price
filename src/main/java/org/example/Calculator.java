@@ -22,7 +22,7 @@ public class Calculator {
         return Math.abs(a);
     }
 
-    public double tan(double a) {
-        return Math.tan(a);
+    public double floor(double a) {
+        return Math.floor(a);
     }
 }
