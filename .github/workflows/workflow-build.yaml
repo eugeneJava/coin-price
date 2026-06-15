@@ -25,7 +25,7 @@ jobs:
           fi
 
       - name: Build app
-        run: mvn clean install
+        run: mvn clean install -DskipTests=true
 
       - name: After build - Show project structure
         run: tree $GITHUB_WORKSPACE
@@ -36,3 +36,17 @@ jobs:
           else
                 echo "No ~/.m2 directory yet"
           fi
+
+      - name: Run tests
+        run: mvn test
+
+      - name: After test - Show project structure
+        run: tree $GITHUB_WORKSPACE
+
+      - name: Collect report if failed
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-report-${{ github.run_id }}
+          path: target/surefire-reports/
+          if-no-files-found: 'warn'
