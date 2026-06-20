@@ -22,7 +22,7 @@ public class Calculator {
         return Math.abs(a);
     }
 
-    public double tanh(double a) {
+    public double tahoe(double a) {
         return Math.tanh(a);
     }
 }
