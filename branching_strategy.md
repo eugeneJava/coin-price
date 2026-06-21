@@ -27,7 +27,15 @@ Github workflows:
 - Branch protection rules ?
 - Environment setup and branches matching ?
   - main
-    - not allowed to merge from git
+    - Protection rules: 
+      - Mobody can push (GitHub configs)
+      - 1 approval from release manager (GitHub configs)
+      - Merging branch should pass build and tests (GitHub action)
+    - Checks to pass:
+      - Build and tests (GitHub action)
+    Release: make an action which deploys main to production and make a release tag (what if the deploy fails? how to rollback?)
+  
+  - release = production
     - merge release and hotifx manually approved by release manager as a github action
   - hotfix = production, development?
     - not allowed to merge from git
