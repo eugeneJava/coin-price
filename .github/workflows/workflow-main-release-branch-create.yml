@@ -19,7 +19,7 @@ jobs:
 
       - name: Validate version format
         run: |
-          VERSION="${{ vars.CURRENT_VERSION }}"
+          CURRENT_RELEASE="${{ vars.CURRENT_RELEASE }}"
 
           echo "Version: $VERSION"
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Create release branch
         run: |
-          VERSION="${{ vars.CURRENT_VERSION }}"
+          CURRENT_RELEASE="${{ vars.CURRENT_RELEASE }}"
           BRANCH="release/$VERSION"
 
           echo "Creating branch: $BRANCH"
