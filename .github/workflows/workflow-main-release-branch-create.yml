@@ -21,9 +21,9 @@ jobs:
         run: |
           CURRENT_RELEASE="${{ vars.CURRENT_RELEASE }}"
 
-          echo "Version: CURRENT_RELEASE"
+          echo "Version: $CURRENT_RELEASE"
 
-          if [[ ! "CURRENT_RELEASE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          if [[ ! "$CURRENT_RELEASE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "❌ Invalid version format. Use x.y.z"
             exit 1
           fi
@@ -31,7 +31,7 @@ jobs:
       - name: Create release branch
         run: |
           CURRENT_RELEASE="${{ vars.CURRENT_RELEASE }}"
-          BRANCH="release/$VERSION"
+          BRANCH="release/$CURRENT_RELEASE"
 
           echo "Creating branch: $BRANCH"
 
