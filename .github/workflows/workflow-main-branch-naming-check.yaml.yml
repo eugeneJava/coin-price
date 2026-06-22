@@ -1,0 +1,21 @@
+name: Branch Name Check
+
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  validate-branch-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate source branch
+        run: |
+          BRANCH_TO_MERGE="${{ github.head_ref }}"
+
+          echo "Branch: $BRANCH_TO_MERGE"
+          if [[ "$BRANCH_TO_MERGE" =~ ^hotfix/.*$ ]]; then exit 0; fi
+          if [[ "$BRANCH_TO_MERGE" =~ ^release/.*$ ]]; then exit 0; fi
+
+          echo "Invalid branch name. Only 'hotfix/...' and 'release/...' branches are allowed."
+          exit 1
