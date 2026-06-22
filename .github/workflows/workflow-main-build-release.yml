@@ -1,0 +1,21 @@
+name: Check main
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Cache maven build
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: maven-m2-repository-cache-${{ hashFiles('**/pom.xml') }}
+      - name: Build app
+        run: mvn clean install -DskipTests=true
+      - name: Run tests
+        run: mvn test

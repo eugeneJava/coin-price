@@ -24,5 +24,6 @@ class CalculatorTest {
     void multiply() {
         assertEquals(6, calculator.multiply(2, 3));
         assertEquals(0, calculator.multiply(2, 0));
+        assertEquals(0, calculator.multiply(2, 1));
     }
 }

@@ -1,0 +1,38 @@
+name: Create release branch
+run-name: Create release branch
+on: [workflow_dispatch]
+
+permissions:
+  contents: write
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ vars.CURRENT_VERSION }}"
+
+          echo "Version: $VERSION"
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format. Use x.y.z"
+            exit 1
+          fi
+
+      - name: Create release branch
+        run: |
+          VERSION="${{ vars.CURRENT_VERSION }}"
+          BRANCH="release/$VERSION"
+
+          echo "Creating branch: $BRANCH"
+
+          git checkout -b "$BRANCH"
+          git push origin "$BRANCH"

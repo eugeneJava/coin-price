@@ -1,0 +1,13 @@
+name: Release
+on:
+  workflow_dispatch:
+    branches:
+      - main
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build release? (Or take from artifacts?)
+        run: echo "Build release"
+      - name: Publish release?
+        run: echo "Publish release"
