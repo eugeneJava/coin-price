@@ -24,7 +24,7 @@ class CalculatorTest {
     void multiply() {
         assertEquals(6, calculator.multiply(2, 3));
         assertEquals(0, calculator.multiply(2, 0));
-        assertEquals(0, calculator.multiply(2, 1));
+        assertEquals(2, calculator.multiply(2, 1));
     }
 
     @Test
@@ -39,5 +39,26 @@ class CalculatorTest {
         assertEquals(1.0, calculator.cos(0), 1e-9);
         assertEquals(0.0, calculator.cos(Math.PI / 2), 1e-9);
         assertEquals(-1.0, calculator.cos(Math.PI), 1e-9);
+    }
+
+    @Test
+    void acos() {
+        assertEquals(Math.PI / 2, calculator.acos(0), 1e-9);
+        assertEquals(0.0, calculator.acos(1), 1e-9);
+        assertEquals(Math.PI, calculator.acos(-1), 1e-9);
+    }
+
+    @Test
+    void cosh() {
+        assertEquals(1.0, calculator.cosh(0), 1e-9);
+        assertEquals(Math.cosh(1), calculator.cosh(1), 1e-9);
+        assertEquals(Math.cosh(-2), calculator.cosh(-2), 1e-9);
+    }
+
+    @Test
+    void карманныйЯщер() {
+        assertEquals(3.0, calculator.карманныйЯщер(2.1), 1e-9);
+        assertEquals(2.0, calculator.карманныйЯщер(2.0), 1e-9);
+        assertEquals(-2.0, calculator.карманныйЯщер(-2.9), 1e-9);
     }
 }
