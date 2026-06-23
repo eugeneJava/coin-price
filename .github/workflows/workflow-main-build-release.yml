@@ -17,5 +17,11 @@ jobs:
           key: maven-m2-repository-cache-${{ hashFiles('**/pom.xml') }}
       - name: Build app
         run: mvn clean install -DskipTests=true
+
       - name: Run tests
         run: mvn test
+
+#      - name: Create release artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          path: target/*.jar
