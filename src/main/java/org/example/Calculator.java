@@ -25,4 +25,12 @@ public class Calculator {
     public double tanh(double a) {
         return Math.tanh(a);
     }
+
+    public double sin(double a) {
+        return Math.sin(a);
+    }
+
+    public double cos(double a) {
+        return Math.cos(a);
+    }
 }
