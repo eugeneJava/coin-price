@@ -12,6 +12,7 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write
+      issues: write
     steps:
       - name: Checkout PR Feature Branch
         uses: actions/checkout@v4
