@@ -33,4 +33,24 @@ public class Calculator {
     public double cos(double a) {
         return Math.cos(a);
     }
+
+    public double atan(double a) {
+        return Math.atan(a);
+    }
+
+    public int min(int a, int b) {
+        return Math.min(a, b);
+    }
+
+    public double min(double a, double b) {
+        return Math.min(a, b);
+    }
+
+    public int max(int a, int b) {
+        return Math.max(a, b);
+    }
+
+    public double max(double a, double b) {
+        return Math.max(a, b);
+    }
 }
