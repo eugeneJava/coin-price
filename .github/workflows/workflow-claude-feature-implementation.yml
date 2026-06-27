@@ -1,0 +1,29 @@
+name: CLAUDE Claude Generate Code on Approval
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  generate-code:
+    if: github.event.label.name == 'plan-approved'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout PR Feature Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Invoke Claude Agent for Code Generation
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            1. Read the approved architectural specification located in '<jiraId>-PLAN.md' (e.g. JIRA-101-PLAN.md) where <jiraId> should be taken from the current branch name at the root of the workspace.
+            2. Based directly on those instructions, write and implement all necessary source files, logic changes, and configurations across the repository.
+            3. Ensure your additions integrate correctly without disrupting existing module patterns.
+            4. Stage, commit, and push all generated functional changes directly back to this active branch to update the current Pull Request.

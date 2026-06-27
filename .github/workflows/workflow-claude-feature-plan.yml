@@ -1,0 +1,38 @@
+name: CLAUDE Generate Plan from Jira ticket or Feature Requirements
+
+on:
+  workflow_dispatch:
+    inputs:
+      jira_id:
+        description: 'Jira Issue ID (e.g., JIRA-101)'
+        required: true
+      feature_requirement:
+        description: 'Feature Requirements (e.g., As a user, I want to be able to do X, so that Y)'
+        required: false
+
+jobs:
+  generate-plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Invoke Claude Agent for Planning
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            1. Use one of the feature requirements source: Jira id or Feature requirements. If both are available, use the Jira id.
+            2. Use your configured Jira MCP tool to find and extract the ticket requirements for "${{ github.event.inputs.jira_id }}". If no MCP use the feature requirements.
+            3. Analyze the requirements against the existing codebase structure.
+            3. Document a comprehensive technical architectural plan inside a file named '${{ github.event.inputs.jira_id }}-PLAN.md' at the root of the repository. Do not implement functional source code yet.
+            4. Create a new git branch named 'feature/${{ github.event.inputs.jira_id }}-<short-3-4-word-description>' (e.g., feature/JIRA-101-add-user-profile).
+            5. Commit '${{ github.event.inputs.jira_id }}-PLAN.md' and push the new branch to origin.
+            6. Open a Pull Request into main titled "Plan for ${{ github.event.inputs.jira_id }}" and assign the current action actor as a reviewer.
+            7. In the PR body, instruct reviewers to verify '${{ github.event.inputs.jira_id }}-PLAN.md' and apply the 'plan-approved' label to trigger final code generation.
