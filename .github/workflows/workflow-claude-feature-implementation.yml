@@ -28,6 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          show_full_output: true
           prompt: |
             1. Read the approved architectural specification located in '<jiraId>-PLAN.md' (e.g. JIRA-101-PLAN.md) where <jiraId> should be taken from the current branch name at the root of the workspace.
             2. Based directly on those instructions, write and implement all necessary source files, logic changes, and configurations across the repository.

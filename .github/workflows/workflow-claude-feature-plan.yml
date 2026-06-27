@@ -32,6 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          show_full_output: true
           prompt: |
             1. Use one of the feature requirements source: Jira id or Feature requirements from the ${{ github.event.inputs.feature_requirement }}. If both are available, use the Jira id.
             2. Use your configured Jira MCP tool to find and extract the ticket requirements for "${{ github.event.inputs.jira_id }}". If no MCP use the feature requirements.
