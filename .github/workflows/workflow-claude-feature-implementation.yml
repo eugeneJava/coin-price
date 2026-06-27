@@ -29,3 +29,5 @@ jobs:
             2. Based directly on those instructions, write and implement all necessary source files, logic changes, and configurations across the repository.
             3. Ensure your additions integrate correctly without disrupting existing module patterns.
             4. Stage, commit, and push all generated functional changes directly back to this active branch to update the current Pull Request.
+          claude_args: |
+            --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }}

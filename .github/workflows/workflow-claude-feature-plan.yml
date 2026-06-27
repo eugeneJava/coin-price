@@ -29,7 +29,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            1. Use one of the feature requirements source: Jira id or Feature requirements. If both are available, use the Jira id.
+            1. Use one of the feature requirements source: Jira id or Feature requirements from the ${{ github.event.inputs.feature_requirement }}. If both are available, use the Jira id.
             2. Use your configured Jira MCP tool to find and extract the ticket requirements for "${{ github.event.inputs.jira_id }}". If no MCP use the feature requirements.
             3. Analyze the requirements against the existing codebase structure.
             3. Document a comprehensive technical architectural plan inside a file named '${{ github.event.inputs.jira_id }}-PLAN.md' at the root of the repository. Do not implement functional source code yet.
@@ -37,3 +37,5 @@ jobs:
             5. Commit '${{ github.event.inputs.jira_id }}-PLAN.md' and push the new branch to origin.
             6. Open a Pull Request into main titled "Plan for ${{ github.event.inputs.jira_id }}" and assign the current action actor as a reviewer.
             7. In the PR body, instruct reviewers to verify '${{ github.event.inputs.jira_id }}-PLAN.md' and apply the 'plan-approved' label to trigger final code generation.
+          claude_args: |
+            --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }}
