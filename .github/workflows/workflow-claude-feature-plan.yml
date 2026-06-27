@@ -42,4 +42,4 @@ jobs:
             6. Commit '${{ github.event.inputs.jira_id }}-PLAN.md' and push the new branch to origin.
             7. Open a Pull Request into main titled "Plan for ${{ github.event.inputs.jira_id }}" and assign the current action actor as a reviewer.
             8. In the PR body, instruct reviewers to verify '${{ github.event.inputs.jira_id }}-PLAN.md' and apply the 'plan-approved' label to trigger final code generation.
-          claude_args: --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }} --debug
+          claude_args: --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }} --dangerously-skip-permissions --debug
