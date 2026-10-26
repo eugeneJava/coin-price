@@ -1,0 +1,43 @@
+name: CLAUDE Generate Plan from GitHub Issue
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub Issue number (e.g., 42)'
+        type: number
+        required: true
+
+jobs:
+  generate-plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Invoke Claude Agent for Planning
+        uses: anthropics/claude-code-action@v1
+        env:
+          # CRITICAL: This grants Claude authorization to push branches and open PRs
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          show_full_output: true
+          prompt: |
+            1. Run `gh issue view ${{ inputs.issue_number }} --comments` to read GitHub issue #${{ inputs.issue_number }}. Treat its title, description and comments as the single source of feature requirements. If the issue cannot be read, stop and report the error without creating any files, branches or PRs.
+            2. Analyze the requirements against the existing codebase structure.
+            3. Document a comprehensive technical architectural plan inside a file named 'ISSUE-${{ inputs.issue_number }}-PLAN.md' at the root of the repository. Do not implement functional source code yet.
+            4. Create a new git branch named 'feature/ISSUE-${{ inputs.issue_number }}-plan'.
+            5. Commit 'ISSUE-${{ inputs.issue_number }}-PLAN.md' and push the new branch to origin.
+            6. Open a Pull Request into main titled "Plan for #${{ inputs.issue_number }}: <issue title>" and assign ${{ github.actor }} as a reviewer.
+            7. In the PR body, include "Closes #${{ inputs.issue_number }}" and instruct reviewers to verify 'ISSUE-${{ inputs.issue_number }}-PLAN.md' and apply the 'plan-approved' label to trigger final code generation.
+            8. Post a comment on issue #${{ inputs.issue_number }} linking to the opened Pull Request.
+          claude_args: --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }} --dangerously-skip-permissions --debug

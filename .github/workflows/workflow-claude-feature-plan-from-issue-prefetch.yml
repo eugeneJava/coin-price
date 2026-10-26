@@ -1,0 +1,76 @@
+name: CLAUDE Generate Plan from GitHub Issue (pre-fetched)
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub Issue number (e.g., 42)'
+        type: number
+        required: true
+
+jobs:
+  generate-plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch GitHub Issue
+        id: issue # lets later steps read this step's outputs as steps.issue.outputs.<name>
+        env:
+          # gh CLI authenticates with GH_TOKEN and targets the repo from GH_REPO
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          # Pass inputs through env instead of writing ${{ }} inside run: to avoid shell injection
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          # Fails the job right away if the issue does not exist.
+          # --jq renders the JSON as markdown: title, labels, description and every comment.
+          context=$(gh issue view "$ISSUE_NUMBER" --json number,title,body,labels,comments --jq '
+            "# #\(.number): \(.title)\n\n"
+            + "Labels: \([.labels[].name] | join(", "))\n\n"
+            + "## Description\n\n\(.body // "")\n\n"
+            + "## Comments\n\n"
+            + ([.comments[] | "**@\(.author.login)**:\n\(.body)\n"] | join("\n"))')
+
+          # Multi-line outputs need the heredoc form: name<<DELIMITER ... DELIMITER.
+          # A random delimiter cannot appear in the issue text and end the value early.
+          delimiter="ISSUE_$(openssl rand -hex 16)"
+          {
+            echo "context<<$delimiter"
+            echo "$context"
+            echo "$delimiter"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Invoke Claude Agent for Planning
+        uses: anthropics/claude-code-action@v1
+        env:
+          # CRITICAL: This grants Claude authorization to push branches and open PRs
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          show_full_output: true
+          # The issue text is embedded directly, so Claude starts with the requirements already in its prompt
+          prompt: |
+            The feature requirements come from GitHub issue #${{ inputs.issue_number }}. Treat the issue below (title, description and comments) as the single source of requirements:
+
+            <issue>
+            ${{ steps.issue.outputs.context }}
+            </issue>
+
+            1. Analyze the requirements against the existing codebase structure.
+            2. Document a comprehensive technical architectural plan inside a file named 'ISSUE-${{ inputs.issue_number }}-PLAN.md' at the root of the repository. Do not implement functional source code yet.
+            3. Create a new git branch named 'feature/ISSUE-${{ inputs.issue_number }}-plan'.
+            4. Commit 'ISSUE-${{ inputs.issue_number }}-PLAN.md' and push the new branch to origin.
+            5. Open a Pull Request into main titled "Plan for #${{ inputs.issue_number }}: <issue title>" and assign ${{ github.actor }} as a reviewer.
+            6. In the PR body, include "Closes #${{ inputs.issue_number }}" and instruct reviewers to verify 'ISSUE-${{ inputs.issue_number }}-PLAN.md' and apply the 'plan-approved' label to trigger final code generation.
+            7. Post a comment on issue #${{ inputs.issue_number }} linking to the opened Pull Request.
+          claude_args: --model ${{ vars.CLAUDE_CODE_REVIEW_MODEL }} --dangerously-skip-permissions --debug
