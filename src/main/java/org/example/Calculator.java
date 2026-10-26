@@ -33,4 +33,8 @@ public class Calculator {
     public double cos(double a) {
         return Math.cos(a);
     }
+
+    public double atan(double a) {
+        return Math.atan(a);
+    }
 }

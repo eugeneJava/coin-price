@@ -40,4 +40,11 @@ class CalculatorTest {
         assertEquals(0.0, calculator.cos(Math.PI / 2), 1e-9);
         assertEquals(-1.0, calculator.cos(Math.PI), 1e-9);
     }
+
+    @Test
+    void atan() {
+        assertEquals(0.0, calculator.atan(0), 1e-9);
+        assertEquals(Math.PI / 4, calculator.atan(1), 1e-9);
+        assertEquals(-Math.PI / 4, calculator.atan(-1), 1e-9);
+    }
 }
